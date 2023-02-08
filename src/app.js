@@ -1,5 +1,4 @@
 require("dotenv").config()
-const { Telegraf } = require("telegraf")
 const bot = require("./bot/bot").bot
 const express = require("express")
 const app = express();

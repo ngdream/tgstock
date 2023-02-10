@@ -1,4 +1,5 @@
-const mediaRouter = require("./lib/medias/media_route").router
-module.exports = {
-    mediaRouter,
-}
+const router = require("express").Router();
+
+router
+    .get("/",()=>{})
+    .post("",()=>{})

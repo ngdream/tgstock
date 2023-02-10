@@ -1,0 +1,35 @@
+services:
+  tgstock:
+    container_name: tgstock
+    image: node:14-alpine
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+      arg:
+        env: ${ENV}
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    container_name: postgres
+    image: postgres:15.0-alpine
+    environment:
+      PGDATABASE: tgstock
+      PGUSER: ${POSTGRES_USER}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /data/postgres
+      PGHOST: db
+    volumes:
+      - db:/data/postgres
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+volumes:
+  db:
